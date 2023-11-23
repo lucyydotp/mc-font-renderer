@@ -2,6 +2,6 @@ export interface Glyph {
     height: number,
     width: number,
     ascent: number,
-    image: ImageBitmap,
+    image: ImageBitmap | undefined,
     char: string
 }

@@ -1,12 +1,20 @@
-import "vite/client"
-import accented from "assets/accented.png"
-import ascii from "assets/ascii.png"
-import nonlatin_european from "assets/nonlatin_european.png"
+import accented from "./assets/accented.png"
+import ascii from "./assets/ascii.png"
+import nonlatin_european from "./assets/nonlatin_european.png"
+import debugFont from "./assets/debug.png"
 import {bitmap} from "@mc-font-renderer/fonts";
 import {FontImpl} from "./fontImpl";
 
+// todo: this function is absolutely disgusting
 async function url2bitmap(url: string) {
-    return await createImageBitmap(await fetch(url).then(it => it.blob()))
+    const bitmap = await createImageBitmap(await fetch(url).then(it => it.blob()))
+
+    const canvas = document.createElement("canvas")
+    canvas.width = bitmap.width
+    canvas.height = bitmap.height
+    const ctx = canvas.getContext('2d')!;
+    ctx.drawImage(bitmap, 0, 0);
+    return ctx.getImageData(0, 0, canvas.width, canvas.height)
 }
 
 export const ASCII = await bitmap(
@@ -190,9 +198,19 @@ export const NONLATIN_EUROPEAN = await bitmap(
         "\u20bc\u20bf\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"
     ]
 )
+//
+// const DEBUG = await bitmap(
+//     await url2bitmap(debugFont),
+//     7,
+//     8,
+//     [
+//         "abcd"
+//     ]
+// )
 
 export const DEFAULT_FONT = new FontImpl([
     ASCII,
     NONLATIN_EUROPEAN,
-    ACCENTED
+    ACCENTED,
+    // DEBUG,
 ])

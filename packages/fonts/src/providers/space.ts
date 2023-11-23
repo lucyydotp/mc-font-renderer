@@ -10,7 +10,6 @@ interface SpaceProviderDefinition {
 
 export class SpaceProvider implements Provider {
 
-    private static readonly EMPTY_IMAGE = new ImageBitmap()
     private readonly map = new Map<string, Glyph>()
 
     constructor(private readonly definition: SpaceProviderDefinition) {
@@ -22,7 +21,7 @@ export class SpaceProvider implements Provider {
                     height: 0,
                     width: advance,
                     ascent: 0,
-                    image: SpaceProvider.EMPTY_IMAGE
+                    image: undefined
                 }
             )
         }

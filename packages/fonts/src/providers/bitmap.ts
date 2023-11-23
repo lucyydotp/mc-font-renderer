@@ -1,7 +1,33 @@
 import {Glyph} from "../font/glyph";
 
+function colorAt(image: ImageData, x: number, y: number) {
+    const idx = ((image.width * y) + x) * 4
+    return [
+        image.data[idx],
+        image.data[idx + 1],
+        image.data[idx + 2],
+        image.data[idx + 3],
+    ]
+}
+
+function getActualWidth(image: ImageData, x: number, y: number, width: number, height: number) {
+    let actualWidth = width - 1
+
+    outer: while (true) {
+        if (actualWidth <= 0) break
+        for (let offsetY = 0; offsetY < height; offsetY++) {
+            const color = colorAt(image, x + actualWidth, y + offsetY)
+            if (color[3] != 0) break outer
+        }
+        actualWidth--
+    }
+    return actualWidth + 1
+}
+
+declare const ctx: CanvasRenderingContext2D
+
 export async function bitmap(
-    source: ImageBitmap,
+    source: ImageData,
     ascent: number,
     height: number = 8,
     chars: string[]
@@ -17,21 +43,35 @@ export async function bitmap(
 
         const colWidth = source.width / row.length
 
+        console.log(`row height ${rowHeight}, col width ${colWidth}`)
+
         for (let colIdx = 0; colIdx < row.length; colIdx++) {
-            const image = await createImageBitmap(
+            const char = row[colIdx]
+            if (char == '\u0000') continue
+
+            const actualWidth = getActualWidth(
                 source,
                 colWidth * colIdx,
                 dy,
                 colWidth,
                 rowHeight
+                )
+
+            console.log(`${char}: ${actualWidth}`)
+
+            const image = await createImageBitmap(
+                source,
+                colWidth * colIdx,
+                dy,
+                actualWidth,
+                rowHeight
             )
 
-            // TODO: trim the glyph to size in the X axis
             glyphs.set(
-                row[colIdx],
+                char,
                 {
                     height,
-                    width: colWidth,
+                    width: actualWidth,
                     image,
                     ascent,
                     char: row[colIdx]
