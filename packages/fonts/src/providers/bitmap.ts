@@ -21,7 +21,8 @@ function getActualWidth(image: ImageData, x: number, y: number, width: number, h
         }
         actualWidth--
     }
-    return actualWidth + 1
+    // todo: why 2?
+    return actualWidth + 2
 }
 
 declare const ctx: CanvasRenderingContext2D

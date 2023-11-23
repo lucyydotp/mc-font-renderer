@@ -33,7 +33,7 @@ export class Renderer {
                     glyph.height * this.scale,
                 )
             }
-            x += (glyph.width + 1) * this.scale
+            x += glyph.width * this.scale
         }
     }
 }
