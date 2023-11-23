@@ -1,0 +1,13 @@
+{
+    "name": "@mc-font-renderer/fonts",
+    "description": "Loads and parses Minecraft fonts into glyphs",
+    "version": "0.1.0",
+    "module": "lib/index.js",
+    "types": "lib/index.d.ts",
+    "scripts": {
+        "build": "tsc"
+    },
+    "devDependencies": {
+        "typescript": "*"
+    }
+}

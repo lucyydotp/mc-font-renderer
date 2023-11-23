@@ -1,0 +1,15 @@
+{
+    "name": "@mc-font-renderer/frontend",
+    "description": "Test/demo frontend for the renderer",
+    "version": "0.1.0",
+    "scripts": {
+        "start": "vite src/index.html"
+    },
+    "dependencies": {
+        "@mc-font-renderer/fonts": "workspace:*"
+    },
+    "devDependencies": {
+        "typescript": "*",
+        "vite": "^5.0.2"
+    }
+}
