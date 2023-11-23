@@ -1,6 +1,5 @@
 import {Renderer} from "./renderer";
 import {DEFAULT_FONT} from "./defaultFont";
-import {FontImpl} from "./fontImpl";
 
 const canvas = document.getElementById("output-canvas") as HTMLCanvasElement
 

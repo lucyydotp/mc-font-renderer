@@ -23,10 +23,14 @@ export class Renderer {
             if (glyph.image) {
                 ctx.drawImage(
                     glyph.image,
+                    0,
+                    0,
+                    glyph.width,
+                    glyph.height,
                     x,
                     (8 - glyph.ascent) * this.scale,
                     glyph.width * this.scale,
-                    glyph.height * this.scale
+                    glyph.height * this.scale,
                 )
             }
             x += (glyph.width + 1) * this.scale

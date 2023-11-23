@@ -2,7 +2,7 @@ import accented from "./assets/accented.png"
 import ascii from "./assets/ascii.png"
 import nonlatin_european from "./assets/nonlatin_european.png"
 import debugFont from "./assets/debug.png"
-import {bitmap} from "@mc-font-renderer/fonts";
+import {bitmap, spaces} from "@mc-font-renderer/fonts";
 import {FontImpl} from "./fontImpl";
 
 // todo: this function is absolutely disgusting
@@ -13,11 +13,12 @@ async function url2bitmap(url: string) {
     canvas.width = bitmap.width
     canvas.height = bitmap.height
     const ctx = canvas.getContext('2d')!;
+    ctx.imageSmoothingEnabled = false
     ctx.drawImage(bitmap, 0, 0);
     return ctx.getImageData(0, 0, canvas.width, canvas.height)
 }
 
-export const ASCII = await bitmap(
+const ASCII = await bitmap(
     await url2bitmap(ascii),
     7,
     8,
@@ -41,7 +42,12 @@ export const ASCII = await bitmap(
     ]
 )
 
-export const ACCENTED = await bitmap(
+const SPACES = spaces({
+        " ": 4,
+        "\u200c": 0
+})
+
+const ACCENTED = await bitmap(
     await url2bitmap(accented),
     10,
     12,
@@ -124,7 +130,7 @@ export const ACCENTED = await bitmap(
     ]
 )
 
-export const NONLATIN_EUROPEAN = await bitmap(
+const NONLATIN_EUROPEAN = await bitmap(
     await url2bitmap(nonlatin_european),
     7,
     8,
@@ -209,6 +215,7 @@ export const NONLATIN_EUROPEAN = await bitmap(
 // )
 
 export const DEFAULT_FONT = new FontImpl([
+    SPACES,
     ASCII,
     NONLATIN_EUROPEAN,
     ACCENTED,
